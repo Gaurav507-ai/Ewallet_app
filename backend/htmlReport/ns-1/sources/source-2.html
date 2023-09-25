@@ -1,0 +1,214 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > TransactionController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: TransactionController (com.example.demo.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94.3%
+  </span>
+  <span class="absValue">
+    (50/53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.controllers;
+&nbsp;
+&nbsp;import com.example.demo.collections.*;
+&nbsp;import com.example.demo.exceptions.AmountNotAvailableException;
+&nbsp;import com.example.demo.payloads.AmountRequest;
+&nbsp;import com.example.demo.payloads.DownloadRequest;
+&nbsp;import com.example.demo.security.JwtHelper;
+&nbsp;import com.example.demo.services.TransactionService;
+&nbsp;import com.example.demo.services.UserService;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import jakarta.mail.MessagingException;
+&nbsp;
+&nbsp;import java.io.UnsupportedEncodingException;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/wallet&quot;)
+<b class="fc">&nbsp;public class TransactionController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private TransactionService transactionService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UserService userService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private JwtHelper jwtHelper;
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping(&quot;/transfer&quot;)
+&nbsp;    public String transactionTransfer(@RequestBody AmountRequest amountRequest, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+<b class="fc">&nbsp;        String email = amountRequest.getEmail();</b>
+<b class="fc">&nbsp;        Double value = amountRequest.getAmount();</b>
+<b class="fc">&nbsp;        User receiver = userService.getUserByEmail(email);</b>
+<b class="fc">&nbsp;        String requestHeader = request.getHeader(&quot;Authorization&quot;);</b>
+<b class="fc">&nbsp;        String token = requestHeader.substring(7);</b>
+<b class="fc">&nbsp;        String username = this.jwtHelper.getUsernameFromToken(token);</b>
+<b class="fc">&nbsp;        User sender = userService.getUserByEmail(username);</b>
+<b class="fc">&nbsp;        if(sender.getEmail().equals(receiver.getEmail())){</b>
+<b class="nc">&nbsp;            return &quot;Insert receiver&#39;s email&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(sender.getWalletBalance()&lt;value){</b>
+<b class="nc">&nbsp;            throw new AmountNotAvailableException(&quot;Amount not available in wallet&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        transactionService.addBalance(value, email);</b>
+<b class="fc">&nbsp;        transactionService.decreaseBalance(value, sender.getUsername());</b>
+<b class="fc">&nbsp;        transactionService.creditMail(value, receiver, sender);</b>
+<b class="fc">&nbsp;        transactionService.debitMail(value, sender, receiver);</b>
+<b class="fc">&nbsp;        transactionService.createCredit(value, receiver,sender);</b>
+<b class="fc">&nbsp;        transactionService.createDebit(value, sender, receiver);</b>
+<b class="fc">&nbsp;        return &quot;Transfer Successfull&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/recharge&quot;)
+&nbsp;    public String recharge(@RequestParam(&quot;value&quot;) Double value, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+<b class="fc">&nbsp;        String requestHeader = request.getHeader(&quot;Authorization&quot;);</b>
+<b class="fc">&nbsp;        String token = requestHeader.substring(7);</b>
+<b class="fc">&nbsp;        String username = this.jwtHelper.getUsernameFromToken(token);</b>
+<b class="fc">&nbsp;        User user = userService.getUserByEmail(username);</b>
+<b class="fc">&nbsp;        transactionService.rechargeWallet(value, user);</b>
+<b class="fc">&nbsp;        transactionService.rechargeMail(value, user);</b>
+<b class="fc">&nbsp;        Double cashback = value/10;</b>
+<b class="fc">&nbsp;        transactionService.createCashback(cashback, user);</b>
+<b class="fc">&nbsp;        transactionService.cashbackMail(cashback, user);</b>
+<b class="fc">&nbsp;        return &quot;Recharge Successfull&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/withdraw&quot;)
+&nbsp;    public String withdraw(@RequestParam(&quot;value&quot;) Double value, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException{
+<b class="fc">&nbsp;        String requestHeader = request.getHeader(&quot;Authorization&quot;);</b>
+<b class="fc">&nbsp;        String token = requestHeader.substring(7);</b>
+<b class="fc">&nbsp;        String username = this.jwtHelper.getUsernameFromToken(token);</b>
+<b class="fc">&nbsp;        User user = userService.getUserByEmail(username);</b>
+<b class="fc">&nbsp;        if(user.getWalletBalance()&lt;value){</b>
+<b class="nc">&nbsp;            throw new AmountNotAvailableException(&quot;Amount not available&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        transactionService.withdrawWallet(value, user);</b>
+<b class="fc">&nbsp;        transactionService.withdrawMail(value, user);</b>
+<b class="fc">&nbsp;        return &quot;Withdraw Successfull&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/transactions&quot;)
+&nbsp;    public List&lt;Transaction&gt; transactionList(HttpServletRequest request){
+<b class="fc">&nbsp;        String requestHeader = request.getHeader(&quot;Authorization&quot;);</b>
+<b class="fc">&nbsp;        String token = requestHeader.substring(7);</b>
+<b class="fc">&nbsp;        String username = this.jwtHelper.getUsernameFromToken(token);</b>
+<b class="fc">&nbsp;        User user = userService.getUserByEmail(username);</b>
+<b class="fc">&nbsp;        return transactionService.transactions(user.getUserId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/download&quot;)
+&nbsp;    public List&lt;DownloadRequest&gt; downloadList(HttpServletRequest request){
+<b class="fc">&nbsp;        String requestHeader = request.getHeader(&quot;Authorization&quot;);</b>
+<b class="fc">&nbsp;        String token = requestHeader.substring(7);</b>
+<b class="fc">&nbsp;        String username = this.jwtHelper.getUsernameFromToken(token);</b>
+<b class="fc">&nbsp;        User user = userService.getUserByEmail(username);</b>
+<b class="fc">&nbsp;        return transactionService.downloads(user.getUserId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/cashback&quot;)
+&nbsp;    public List&lt;Cashback&gt; cashbackList(HttpServletRequest request){
+<b class="fc">&nbsp;        String requestHeader = request.getHeader(&quot;Authorization&quot;);</b>
+<b class="fc">&nbsp;        String token = requestHeader.substring(7);</b>
+<b class="fc">&nbsp;        String username = this.jwtHelper.getUsernameFromToken(token);</b>
+<b class="fc">&nbsp;        User user = userService.getUserByEmail(username);</b>
+<b class="fc">&nbsp;        return transactionService.cashbacks(user.getUserId());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-09-25 00:19</div>
+</div>
+</body>
+</html>
