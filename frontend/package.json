@@ -63,13 +63,6 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.js"
     ],
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "coverageReporters": [
-      "lcov",
-      "text-summary"
-    ]
+    "collectCoverage": true
   }
 }
