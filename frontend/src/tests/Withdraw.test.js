@@ -7,7 +7,7 @@ jest.mock('../subComponents/WithdrawLayout', () => () => <div data-testid="mockW
 jest.mock('../subComponents/Sidebar', () => () => <div data-testid="mockSidebar" />);
 
 describe('Withdraw Component', () => {
-  it('renders Navbar, Sidebar, and WithdrawLayout components', () => {
+  test('Renders Navbar, Sidebar, and WithdrawLayout components', () => {
     render(<Withdraw />);
 
     expect(screen.getByTestId('mockNavbar')).toBeInTheDocument();

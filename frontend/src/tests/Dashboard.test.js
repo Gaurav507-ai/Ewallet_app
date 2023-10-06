@@ -7,7 +7,7 @@ jest.mock('../subComponents/DashboardLayout', () => () => <div data-testid="mock
 jest.mock('../subComponents/Sidebar', () => () => <div data-testid="mockSidebar" />);
 
 describe('Dashboard Component', () => {
-  it('renders Navbar, Sidebar and DashboardLayout components', () => {
+  test('Renders Navbar, Sidebar and DashboardLayout components', () => {
     render(<Dashboard />);
 
     expect(screen.getByTestId('mockNavbar')).toBeInTheDocument();

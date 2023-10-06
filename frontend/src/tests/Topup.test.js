@@ -7,7 +7,7 @@ jest.mock('../subComponents/TopupLayout', () => () => <div data-testid="mockTopu
 jest.mock('../subComponents/Sidebar', () => () => <div data-testid="mockSidebar" />);
 
 describe('Topup Component', () => {
-  it('renders Navbar, Sidebar, and TopupLayout components', () => {
+  test('Renders Navbar, Sidebar, and TopupLayout components', () => {
     render(<Topup />);
 
     expect(screen.getByTestId('mockNavbar')).toBeInTheDocument();

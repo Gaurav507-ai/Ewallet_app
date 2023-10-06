@@ -46,7 +46,6 @@ export default function CashbackLayout() {
       }
     }).then((response) => {
       const myList = response.data;
-      console.log(response.data);
       setCashbacks(myList);
     }).catch((error) => {
     })
@@ -87,7 +86,7 @@ export default function CashbackLayout() {
                 {records.map((cashback) => (
                   <tr key={cashback.id}>
                     <td style={{ backgroundColor: '#D3D3D3' }}>{cashback.id}</td>
-                    <td style={{ backgroundColor: '#D3D3D3' }}>Rs. {cashback.amount}</td>
+                    <td style={{ backgroundColor: '#D3D3D3' }}>₹ {cashback.amount.toFixed(2)}</td>
                     <td style={{ backgroundColor: '#D3D3D3' }}>{cashback.description}</td>
                     <td style={{ backgroundColor: '#D3D3D3' }}>{cashback.date}</td>
                     <td style={{ backgroundColor: '#D3D3D3' }}>Cashback</td>
@@ -110,7 +109,7 @@ export default function CashbackLayout() {
                 {currentPage === 1 ? (
                   <ul className="pagination">
                     <li className="page-item">
-                      <CSVLink className='page-link text-white text-decoration-none' style={{ backgroundColor: 'green' }} {...csvLink}>Generate CSV File</CSVLink>
+                      <CSVLink className='page-link text-white text-decoration-none' style={{ backgroundColor: 'green' }} {...csvLink}>Download</CSVLink>
                     </li>
                   </ul>
                 ) : (

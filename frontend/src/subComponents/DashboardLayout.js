@@ -22,6 +22,7 @@ export default function DashboardLayout() {
   const [balance, setBalance] = useState(null);
   const [inc, setInc] = useState(null);
   const [exp, setExp] = useState(null);
+  const [cback, setCback] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -29,13 +30,13 @@ export default function DashboardLayout() {
   })
 
   const data = {
-    labels: ['Income', 'Expense'],
+    labels: ['Income', 'Expense', 'Cashback'],
     datasets: [
       {
-        label: 'Poll',
-        data: [inc, exp],
-        backgroundColor: ['aqua', 'orange'],
-        borderColor: ['black', 'red', 'blue']
+        label: 'Amount',
+        data: [inc, exp, cback],
+        backgroundColor: ['aqua', 'violet', 'orange'],
+        borderColor: ['black', 'purple', 'red']
       }
     ]
   };
@@ -51,17 +52,18 @@ export default function DashboardLayout() {
         'Authorization': `Bearer ${token}`
       }
     }).then((response) => {
-      const { walletBalance, income, expenses } = response.data;
-      setBalance(walletBalance);
-      if (income === 0 && expenses === 0) {
+      const { walletBalance, income, expenses,cashback } = response.data;
+      setBalance(walletBalance.toFixed(2));
+      if (income === 0 && expenses === 0 && cashback === 0) {
         setInc(1);
         setExp(1);
+        setCback(1);
       }
       else {
         setInc(income);
         setExp(expenses);
+        setCback(cashback);
       }
-      console.log(inc)
     }).catch((error) => {
     })
   }
@@ -71,7 +73,7 @@ export default function DashboardLayout() {
         <div className="container d-flex justify-content-between rounded" style={{ height: '130px', marginTop: '15px', backgroundColor: 'rgb(99, 121, 244)' }}>
           <div className='d-flex flex-column text-light mt-3 ms-2'>
             <p>Wallet Balance</p>
-            <p className='h1'>Rs {balance}</p>
+            <p className='h1'>₹ {balance} </p>
           </div>
           <div className="d-flex flex-column me-3 mt-3">
             <Link to="/topup"><button className='btn text-center' style={{ border: '1px solid white', color: 'white', width: '120px' }}>
@@ -83,8 +85,8 @@ export default function DashboardLayout() {
             </button></Link>
           </div>
         </div>
-        <div className='mx-auto' style={{ width: '50%', height: '70%' }}>
-          <Doughnut data={data} options={options}>
+        <div className='mx-auto' data-testid='doughnut-chart' style={{ width: '50%', height: '70%' }}>
+          <Doughnut data={data} options={options} >
 
           </Doughnut>
         </div>

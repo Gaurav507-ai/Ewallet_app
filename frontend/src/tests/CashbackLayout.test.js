@@ -25,15 +25,15 @@ describe('CashbackLayout Component', () => {
     });
   });
 
-  it('renders the component without errors', async () => {
+  test('Renders the cashbackLayout component', async () => {
     render(<CashbackLayout />);
     await waitFor(() => screen.getByText('Amount'));
     expect(screen.getByText('Amount')).toBeInTheDocument();
   });
 
-  it('displays cashback records', async () => {
+  test('Displays cashback records', async () => {
     render(<CashbackLayout />);
-    await waitFor(() => screen.getByText('Cashback 1'));
+    await waitFor(() => screen.getByText('Type'));
 
     expect(screen.getByText('Cashback 1')).toBeInTheDocument();
     expect(screen.getByText('Cashback 2')).toBeInTheDocument();

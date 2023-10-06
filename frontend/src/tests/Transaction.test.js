@@ -7,7 +7,7 @@ jest.mock('../subComponents/TransactionLayout', () => () => <div data-testid="mo
 jest.mock('../subComponents/Sidebar', () => () => <div data-testid="mockSidebar" />);
 
 describe('Transaction Component', () => {
-  it('renders Navbar, Sidebar, and TransactionLayout components', () => {
+  test('Renders Navbar, Sidebar, and TransactionLayout components', () => {
     render(<Transaction />);
 
     expect(screen.getByTestId('mockNavbar')).toBeInTheDocument();

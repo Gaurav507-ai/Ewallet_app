@@ -3,7 +3,7 @@ import React from 'react'
 import axios from "axios";
 
 export default function TransferLayout() {
-    const initialValues = { email: "", amount: null }
+    const initialValues = { email: "", amount: 10 }
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
@@ -40,6 +40,9 @@ export default function TransferLayout() {
         if (!values.amount) {
             errors.amount = "Amount is required"
         }
+        else if(values.amount<10){
+            errors.amount = "Minimum 10 Rs. can be transferred"
+        }
         return errors;
     }
 
@@ -56,12 +59,14 @@ export default function TransferLayout() {
         }).then((response) => {
             if (response.data === `Insert receiver's email`) {
                 setMessage("")
-                setErrorMessage("Insert receiver's email")
+                setErrorMessage("Do not enter your own email")
             }
             else {
                 setMessage("")
                 setMessage("Money transfer successfully")
                 setErrorMessage("")
+                formValues.amount = 10;
+                formValues.email = "";
             }
         }).catch((error) => {
             if (error.response.data === 'Amount not available in wallet') {
@@ -70,7 +75,7 @@ export default function TransferLayout() {
             }
             else {
                 setMessage("")
-                setErrorMessage("User not found")
+                setErrorMessage("Receiver is not an ewallet user")
             }
         })
     }
@@ -81,31 +86,31 @@ export default function TransferLayout() {
                 <h2 className='mb-5 mt-4'>Transfer</h2>
                 <hr />
                 {message.length !== 0 ? (
-                    <div class="alert alert-success mx-auto text-center fw-bold" role="alert" style={{ width: '50%' }}>
+                    <div className="alert alert-success mx-auto text-center fw-bold" role="alert" style={{ width: '50%' }}>
                         {message}
                     </div>
                 ) : (
                     null
                 )}
                 {errorMessage.length !== 0 ? (
-                    <div class="alert alert-danger mx-auto text-center fw-bold" role="alert" style={{ width: '50%' }}>
+                    <div className="alert alert-danger mx-auto text-center fw-bold" role="alert" style={{ width: '50%' }}>
                         {errorMessage}
                     </div>
                 ) : (
                     null
                 )}
                 <form>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Receiver's email</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" value={formValues.email} onChange={handleChange} style={{ border: "1px solid black", width: '50%' }} />
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputEmail1" className="form-label">Receiver's email</label>
+                        <input type="email" name="email" className="form-control" id="exampleInputEmail1" value={formValues.email} onChange={handleChange} style={{ border: "1px solid black", width: '50%' }} />
                     </div>
                     <p className='text-danger'>{formErrors.email}</p>
-                    <div class="mb-3">
-                        <label for="exampleInputInteger" class="form-label">Amount</label>
-                        <input type="number" name="amount" class="form-control" id="exampleInputInteger" value={formValues.amount} onChange={handleChange} style={{ border: "1px solid black", width: '50%' }} />
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputInteger" className="form-label">Amount</label>
+                        <input type="number" name="amount" className="form-control" id="exampleInputInteger" value={formValues.amount} onChange={handleChange} min="10" style={{ border: "1px solid black", width: '50%' }} />
                     </div>
                     <p className='text-danger'>{formErrors.amount}</p>
-                    <button type="submit" onClick={handleSubmit} class="btn btn-primary">Transfer</button>
+                    <button type="submit" onClick={handleSubmit} className="btn btn-primary">Transfer</button>
                 </form>
             </div>
         </>

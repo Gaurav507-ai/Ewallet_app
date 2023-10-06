@@ -36,22 +36,22 @@ export default function Signup() {
 
   const validate = (values) => {
     const errors = {}
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    const regexusername = /\d/i;
-    const regexspaces = /^[^\s]+$/;
+    const regexemail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    const regexinitial = /^[^\s]+$/
+    const regexnumber = /^[a-zA-Z]+$/i;
     if (!values.username) {
       errors.username = "Username is required"
     }
-    else if (regexusername.test(values.username)) {
-      errors.username = "Username must not contain number"
-    }
-    else if (!regexspaces.test(values.username)) {
+    else if (!regexinitial.test(values.username)) {
       errors.username = "Username must not contain spaces"
+    }
+    else if(!regexnumber.test(values.username)){
+      errors.username = "Username must not contain numbers";
     }
     if (!values.email) {
       errors.email = "Email is required"
     }
-    else if (!regex.test(values.email)) {
+    else if (!regexemail.test(values.email)) {
       errors.email = "This is not a valid email format"
     }
     if (!values.password) {
@@ -73,7 +73,7 @@ export default function Signup() {
       setErrorMessage("");
     }).catch((error) => {
       setConfirmMessage("")
-      setErrorMessage("User already exist")
+      setErrorMessage("User is already a member of ewallet")
     })
   }
   return (
@@ -81,14 +81,14 @@ export default function Signup() {
       <Navbar />
       <div className='container-fluid' style={{ marginTop: '40px' }}>
         {confirmMessage.length !== 0 ? (
-          <div class="alert alert-success mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
+          <div className="alert alert-success mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
             {confirmMessage}
           </div>
         ) : (
           null
         )}
         {errorMessage.length !== 0 ? (
-          <div class="alert alert-danger mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
+          <div className="alert alert-danger mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
             {errorMessage}
           </div>
         ) : (
@@ -96,22 +96,22 @@ export default function Signup() {
         )}
         <form className='mx-auto p-3 rounded bg-white shadow-lg' style={{ width: '40%' }}>
           <h2 className='text-center'><img src={signup} alt="dashboard" style={{ width: '30px', marginRight: "10px" }} />Signup</h2>
-          <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control rounded" id="username" name='username' value={formValues.username} onChange={handleChange} />
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">Username</label>
+            <input type="text" className="form-control rounded" id="username" name='username' value={formValues.username} onChange={handleChange} />
             <p className='text-danger'>{formErrors.username}</p>
           </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" name='email' class="form-control rounded" id="email" value={formValues.email} onChange={handleChange} />
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email address</label>
+            <input type="email" name='email' className="form-control rounded" id="email" value={formValues.email} onChange={handleChange} />
             <p className='text-danger'>{formErrors.email}</p>
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" name='password' class="form-control rounded" id="password" value={formValues.password} onChange={handleChange} />
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Password</label>
+            <input type="password" name='password' className="form-control rounded" id="password" value={formValues.password} onChange={handleChange} />
             <p className='text-danger'>{formErrors.password}</p>
           </div>
-          <button type="submit" class="btn btn-primary" onClick={handleSubmit}>Submit</button>
+          <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
           <p className='mt-3'>Already have an account? <Link to="/login">Login</Link></p>
         </form>
       </div>

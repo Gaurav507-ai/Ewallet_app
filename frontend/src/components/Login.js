@@ -41,12 +41,15 @@ export default function Login(props) {
       if (location.pathname === '/login/verified') {
         setConfirmMessage("User successfully verified");
       }
+      else if(location.pathname === '/login/unverified'){
+        setErrorMessage("Verification link is not valid");
+      }
     }
   }, [formErrors, isSubmit]);
 
   const validate = (values) => {
     const errors = {}
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const regexspaces = /^[^\s]+$/;
     if (!values.email) {
       errors.email = "Email is required"
@@ -83,14 +86,14 @@ export default function Login(props) {
       <Navbar />
       <div className='container-fluid' style={{ marginTop: '40px' }}>
         {confirmMessage.length !== 0 ? (
-          <div class="alert alert-success mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
+          <div className="alert alert-success mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
             {confirmMessage}
           </div>
         ) : (
           null
         )}
         {errorMessage.length !== 0 ? (
-          <div class="alert alert-danger mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
+          <div className="alert alert-danger mx-auto text-center fw-bold" role="alert" style={{ width: '40%' }}>
             {errorMessage}
           </div>
         ) : (
@@ -98,17 +101,17 @@ export default function Login(props) {
         )}
         <form className='mx-auto p-3 bg-white rounded shadow-lg' style={{ width: '40%' }}>
           <h2 className='text-center'><img src={login} alt="dashboard" style={{ width: '30px', marginRight: "10px" }} />Login</h2>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" name='email' class="form-control" id="email" value={formValues.email} onChange={handleChange} />
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email address</label>
+            <input type="email" name='email' className="form-control" id="email" value={formValues.email} onChange={handleChange} />
             <p className='text-danger'>{formErrors.email}</p>
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" name='password' class="form-control" id="password" value={formValues.password} onChange={handleChange} />
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Password</label>
+            <input type="password" name='password' className="form-control" id="password" value={formValues.password} onChange={handleChange} />
             <p className='text-danger'>{formErrors.password}</p>
           </div>
-          <button type="submit" class="btn btn-primary" onClick={handleSubmit}>Submit</button>
+          <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
           <p className='mt-3'>Don't have an account? <Link to="/signup">Signup</Link></p>
         </form>
       </div>

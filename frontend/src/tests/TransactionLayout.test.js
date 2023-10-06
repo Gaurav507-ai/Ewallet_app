@@ -27,15 +27,15 @@ describe('TransactionLayout Component', () => {
     });
   });
 
-  it('renders the component without errors', async () => {
+  test('Renders TransactionLayout component', async () => {
     render(<TransactionLayout />);
     await waitFor(() => screen.getByText('Amount'));
     expect(screen.getByText('Amount')).toBeInTheDocument();
   });
 
-  it('displays cashback records', async () => {
+  test('Displays cashback records', async () => {
     render(<TransactionLayout />);
-    await waitFor(() => screen.getByText('Transaction 1'));
+    await waitFor(() => screen.getByText('Description'));
 
     expect(screen.getByText('Transaction 1')).toBeInTheDocument();
     expect(screen.getByText('Transaction 2')).toBeInTheDocument();

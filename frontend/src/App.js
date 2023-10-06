@@ -19,6 +19,7 @@ export default function App() {
             <Route path="/" element={<Landing />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/login/verified" element={<Login/>}/>
+            <Route path="/login/unverified" element={<Login/>}/>
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/transaction" element={<Transaction/>}/>

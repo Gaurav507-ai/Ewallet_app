@@ -7,12 +7,13 @@ jest.mock('../subComponents/CashbackLayout', () => () => <div data-testid="mockC
 jest.mock('../subComponents/Sidebar', () => () => <div data-testid="mockSidebar" />);
 
 describe('Cashback Component', () => {
-  it('renders Navbar, Sidebar and CashbackLayout components', () => {
+  test('renders Navbar, Sidebar and CashbackLayout components', async () => {
     render(<Cashback />);
-
+    
     expect(screen.getByTestId('mockNavbar')).toBeInTheDocument();
     expect(screen.getByTestId('mockSidebar')).toBeInTheDocument();
     expect(screen.getByTestId('mockCashbackLayout')).toBeInTheDocument();
   });
 
 });
+

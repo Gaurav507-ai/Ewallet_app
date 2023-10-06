@@ -1,17 +1,19 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import WithdrawLayout from '../subComponents/WithdrawLayout';
 
 
 jest.mock('axios');
 
-describe('WithdrawLayout', () => {
-  it('renders component without errors', () => {
+describe('WithdrawLayout Component', () => {
+  test('Render Withdraw component', () => {
     render(<WithdrawLayout />);
+    const element = screen.getByText('Withdraw')
+    expect(element).toBeInTheDocument();
   });
 
-  it('handles form submission successfully', async () => {
+  test('Handles form submission successfully', async () => {
     axios.put.mockResolvedValue({ data: 'Money withdraw successful' });
 
     render(<WithdrawLayout />);
@@ -22,11 +24,8 @@ describe('WithdrawLayout', () => {
     fireEvent.change(amountInput, { target: { value: '100' } });
     fireEvent.click(withdrawButton);
 
-    await act(async () => {
-      expect(await screen.findByText('Please wait while we are processing your request')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Please wait while we are processing your request')).toBeInTheDocument();
     });
-
-    expect(amountInput).toBeInTheDocument();
-    expect(withdrawButton).toBeInTheDocument();
   });
 });

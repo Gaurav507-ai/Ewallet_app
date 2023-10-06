@@ -7,7 +7,7 @@ jest.mock('../subComponents/TransferLayout', () => () => <div data-testid="mockT
 jest.mock('../subComponents/Sidebar', () => () => <div data-testid="mockSidebar" />);
 
 describe('Transfer Component', () => {
-  it('renders Navbar, Sidebar, and TransferLayout components', () => {
+  test('Renders Navbar, Sidebar, and TransferLayout components', () => {
     render(<Transfer />);
 
     expect(screen.getByTestId('mockNavbar')).toBeInTheDocument();

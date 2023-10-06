@@ -52,7 +52,7 @@ export default function Sidebar() {
                     <li>
                         <Link to="/topup" className={"nav-link " + (url === "/topup" ? " bg-primary " : "") + " text-black"}>
                             <img src={topup} alt="dashboard" style={{ marginRight: '10px', width: '24px' }} />
-                            <b>Topup</b>
+                            <b>Top up</b>
                         </Link>
                     </li>
                     <li>

@@ -59,7 +59,6 @@ export default function TransactionLayout() {
       }
     }).then((response) => {
       const myList = response.data;
-      console.log(myList);
       setDownloads(myList);
     }).catch((error) => {
     })
@@ -98,9 +97,9 @@ export default function TransactionLayout() {
               </thead>
               <tbody>
                 {records.map((transaction) => (
-                  <tr>
+                  <tr key={transaction.id}>
                     <td style={{ backgroundColor: '#D3D3D3' }}>{transaction.id}</td>
-                    <td style={{ backgroundColor: '#D3D3D3' }}>Rs. {transaction.amount}</td>
+                    <td style={{ backgroundColor: '#D3D3D3' }}>₹ {transaction.amount.toFixed(2)}</td>
                     <td style={{ backgroundColor: '#D3D3D3' }}>{transaction.description}</td>
                     <td style={{ backgroundColor: '#D3D3D3' }}>{transaction.date}</td>
                     <td style={{ backgroundColor: '#D3D3D3' }}>{transaction.type}</td>
@@ -123,7 +122,7 @@ export default function TransactionLayout() {
                 {currentPage === 1 ? (
                   <ul className="pagination">
                     <li className="page-item">
-                      <CSVLink className='page-link text-white text-decoration-none' style={{ backgroundColor: 'green' }} {...csvLink}>Generate CSV File</CSVLink>
+                      <CSVLink className='page-link text-white text-decoration-none' style={{ backgroundColor: 'green' }} {...csvLink}>Download</CSVLink>
                     </li>
                   </ul>
                 ) : (

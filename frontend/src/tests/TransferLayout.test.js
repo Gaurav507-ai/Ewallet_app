@@ -1,17 +1,19 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios'; 
 import TransferLayout from '../subComponents/TransferLayout';
 
 
 jest.mock('axios');
 
-describe('TransferLayout', () => {
-  it('renders component without errors', () => {
+describe('TransferLayout component', () => {
+  test('Renders component', () => {
     render(<TransferLayout />);
+    const element = screen.getByText('Amount');
+    expect(element).toBeInTheDocument();
   });
 
-  it('handles form submission successfully', async () => {
+  test('Handles form submission successfully', async () => {
     axios.post.mockResolvedValue({ data: 'Money transfer successfully' });
 
     render(<TransferLayout />);
@@ -24,11 +26,8 @@ describe('TransferLayout', () => {
     fireEvent.change(amountInput, { target: { value: '100' } });
     fireEvent.click(transferButton[1]);
 
-    await act(async () => {
-      expect(await screen.findByText('Please wait while we are processing your request')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Please wait while we are processing your request')).toBeInTheDocument();
     });
-    expect(emailInput).toBeInTheDocument();
-    expect(amountInput).toBeInTheDocument();
-    expect(transferButton[1]).toBeInTheDocument();
   });
 });

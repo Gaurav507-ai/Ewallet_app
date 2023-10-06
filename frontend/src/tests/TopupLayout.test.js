@@ -1,18 +1,20 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios'; 
 import TopupLayout from '../subComponents/TopupLayout';
 
 
 jest.mock('axios');
 
-describe('TopupLayout', () => {
-  it('renders component without errors', () => {
+describe('TopupLayout Component', () => {
+  test('Renders TopupLayout component ', () => {
     render(<TopupLayout />);
+    const element = screen.getByText('Top up')
+    expect(element).toBeInTheDocument();
   });
 
-  it('handles form submission successfully', async () => {
-    axios.put.mockResolvedValue({ data: 'Money recharge successfull' });
+  test('Handles form submission successfully', async () => {
+    axios.post.mockResolvedValue({ data: 'Money recharge successfull' });
 
     render(<TopupLayout />);
 
@@ -23,10 +25,8 @@ describe('TopupLayout', () => {
     fireEvent.change(amountInput, { target: { value: '100' } });
     fireEvent.click(topupButton);
 
-    await act(async () => {
-      expect(await screen.findByText('Please wait while we are processing your request')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Please wait while we are processing your request')).toBeInTheDocument();
     });
-    expect(amountInput).toBeInTheDocument();
-    expect(topupButton).toBeInTheDocument();
   });
 });

@@ -14,7 +14,7 @@ export default function Description() {
                     <li>Users can easily transfer funds to the other Ewallet user.</li>
                     <li>A detailed transaction history is provided which enable users to review transactions.</li>
                     <li>Users can download their detailed transaction history.</li>
-                    <li>User will get maximum 150 rupees cashback on every recharge.</li>
+                    <li>User will get 10% cashback upto Rs.150 on every recharge.</li>
                 </ul>
             </div>
             <div className="col">
