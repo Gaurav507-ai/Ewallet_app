@@ -1,4 +1,4 @@
-# CampAdvisor Project
+# Wallet Banking Application
 
 ### Description
 
