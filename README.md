@@ -27,20 +27,20 @@ A wallet banking app using java spring boot and react.js
 
 #### Landing Page
 
-![](Screenshot/Landing.png)
+![](Screenshots/Landing.png)
 
 #### Signup Page
 
-![](Screenshot/Signup.PNG)
+![](Screenshots/Signup.PNG)
 
 #### Login Page
 
-![](Screenshot/Login.PNG)
+![](Screenshots/Login.PNG)
 
 #### Dashboard Page
 
-![](Screenshot/Dashboard.PNG)
+![](Screenshots/Dashboard.PNG)
 
 #### Transactions Page
 
-![](Screenshot/Transactions.PNG)
+![](Screenshots/Transactions.PNG)
