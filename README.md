@@ -2,7 +2,7 @@
 
 ### Description
 
-A wallet banking app using java spring boot and react.js
+Ewallet is a web-based application where users can add money to their wallet and transfer it to another ewallet user
 
 ### Main Function/Feature
 
